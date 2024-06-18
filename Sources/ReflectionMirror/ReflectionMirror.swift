@@ -12,8 +12,14 @@
 
 import SwiftShims
 
+#if os(WASI)
+internal func _isClassType(_ type: Any.Type) -> Bool {
+  return swift_isClassType(unsafeBitCast(type, to: UnsafeRawPointer.self))
+}
+#else
 @_silgen_name("swift_isClassType")
 internal func _isClassType(_: Any.Type) -> Bool
+#endif
 
 @_silgen_name("swift_getMetadataKind")
 internal func _metadataKind(_: Any.Type) -> UInt
